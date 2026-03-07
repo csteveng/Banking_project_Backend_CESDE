@@ -17,6 +17,7 @@ public class Main {
                 "3001234567",
                 LocalDate.now()
         );
+
         System.out.println("Hello your data is: " + "\n" + customer);
     }
 }
