@@ -1,11 +1,10 @@
-package application.service;
+package application.service.ports;
 
 import application.domain.SavingsAccount;
 import application.domain.Transaction;
 import application.domain.enums.AccountState;
 import application.domain.enums.TransactionType;
 import application.service.outputs.SavingsAccountService;
-import application.service.ports.SavingsAccountRepositoryPort;
 
 import java.util.Optional;
 
