@@ -3,39 +3,36 @@ package application.repository;
 import application.domain.CreditCard;
 import application.service.ports.CreditCardRepositoryPort;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreditCardRepository implements CreditCardRepositoryPort {
-
-    private final Map<String, CreditCard> database = new HashMap<>();
+    private final List<CreditCard> cards = new ArrayList<>();
 
     @Override
-    public void save(CreditCard creditCard) {
-        database.put(creditCard.getAccountNumber(), creditCard);
+    public void save(CreditCard card) {
+        cards.add(card);
     }
 
     @Override
-    public Optional<CreditCard> findById(String accountNumber) {
-        return Optional.ofNullable(database.get(accountNumber));
+    public CreditCard findByCardNumber(String cardNumber) {
+        return cards.stream()
+                .filter(c -> c.getAccountNumber().equals(cardNumber))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
     public List<CreditCard> findAll() {
-        return new ArrayList<>(database.values());
+        return new ArrayList<>(cards);
     }
 
     @Override
-    public void update(CreditCard creditCard) {
-        if (database.containsKey(creditCard.getAccountNumber())) {
-            database.put(creditCard.getAccountNumber(), creditCard);
-        } else {
-            throw new IllegalArgumentException("CreditCard con número "
-                    + creditCard.getAccountNumber() + " no encontrada");
+    public void update(CreditCard card) {
+        CreditCard existing = findByCardNumber(card.getAccountNumber());
+        if (existing != null) {
+            cards.remove(existing);
+            cards.add(card);
         }
-    }
-
-    @Override
-    public void delete(CreditCard creditCard) {
-        database.remove(creditCard.getAccountNumber());
     }
 }

@@ -1,58 +1,36 @@
 package application.repository;
 
 import application.domain.CheckingAccount;
-import application.repository.CheckingAccountRepositoryPort;
+import application.service.ports.CheckingAccountRepositoryPort;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckingAccountRepository implements CheckingAccountRepositoryPort {
-
-    private List<CheckingAccount> accounts = new ArrayList<>();
-
-    @Override
-    public void save(CheckingAccount account) {
-        accounts.add(account);
-    }
+    private final Map<String, CheckingAccount> database = new HashMap<>();
 
     @Override
     public CheckingAccount findByAccountNumber(String accountNumber) {
-        for (CheckingAccount acc : accounts) {
-            if (acc.getAccountNumber().equals(accountNumber)) {
-                return acc;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public List<CheckingAccount> findAll() {
-        return accounts;
+        return database.get(accountNumber);
     }
 
     @Override
     public void update(CheckingAccount account) {
-        for (int i = 0; i < accounts.size(); i++) {
-            if (accounts.get(i).getAccountNumber().equals(account.getAccountNumber())) {
-                accounts.set(i, account);
-                return;
-            }
-        }
+        database.put(account.getAccountNumber(), account);
     }
 
     @Override
     public void delete(String accountNumber) {
-        CheckingAccount toRemove = null;
 
-        for (CheckingAccount acc : accounts) {
-            if (acc.getAccountNumber().equals(accountNumber)) {
-                toRemove = acc;
-                break;
-            }
-        }
+    }
 
-        if (toRemove != null) {
-            accounts.remove(toRemove);
-        }
+    @Override
+    public void save(CheckingAccount account) {
+        database.put(account.getAccountNumber(), account);
+    }
+
+    @Override
+    public java.util.List<CheckingAccount> findAll() {
+        return new java.util.ArrayList<>(database.values());
     }
 }

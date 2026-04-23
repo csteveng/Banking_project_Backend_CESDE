@@ -1,17 +1,12 @@
 package application.service;
 
 import application.domain.CreditCard;
-import application.domain.Transaction;
-import application.domain.enums.AccountState;
-import application.domain.enums.TransactionType;
-
 import application.service.outputs.CreditCardService;
 import application.service.ports.CreditCardRepositoryPort;
 
-import java.util.Optional;
+import java.util.List;
 
 public class CreditCardServiceImpl implements CreditCardService {
-
     private final CreditCardRepositoryPort repository;
 
     public CreditCardServiceImpl(CreditCardRepositoryPort repository) {
@@ -19,101 +14,63 @@ public class CreditCardServiceImpl implements CreditCardService {
     }
 
     @Override
-    public CreditCard createCreditCard(CreditCard creditCard) {
-        return null;
+    public void createCreditCard(CreditCard card) {
+        repository.save(card);
     }
 
     @Override
-    public CreditCard updateCreditCard(CreditCard creditCard) {
-        return null;
+    public CreditCard getCard(String cardNumber) {
+        return repository.findByCardNumber(cardNumber);
     }
 
     @Override
-    public void purchase(String cardNumber, double amount, int installments) {
-        Optional<CreditCard> cardOpt = repository.findById(cardNumber);
-
-        if (cardOpt.isEmpty()) {
-            System.out.println("Error: La tarjeta " + cardNumber + " no existe.");
-            return;
-        }
-
-        CreditCard card = cardOpt.get();
-
-        if (card.getAccountState() != AccountState.ACTIVE) {
-            System.out.println("Error: La tarjeta no está activa.");
-            return;
-        }
-
-        if (amount < 0) {
-            System.out.println("Error: El monto debe ser mayor a cero.");
-            return;
-        }
-
-        if (card.getBalance() < amount) {
-            System.out.println("Error: Saldo insuficiente. Tu saldo es: $" + card.getBalance());
-            return;
-        }
-
-        double newBalance = card.getBalance() - amount;
-        card.setBalance(newBalance);
-
-        double cuota = calculateMonthlyInstallment(amount, installments);
-
-        Transaction purchaseRecord = new Transaction(
-                card.getTransactions().size() + 1,
-                TransactionType.CREDIT_PAYMENT,
-                amount,
-                newBalance,
-                "Compra con tarjeta de crédito en " + installments + " cuotas. Cuota mensual: $" + cuota
-        );
-        card.getTransactions().add(purchaseRecord);
-
-        repository.update(card);
-        System.out.println("Compra realizada. Cuota mensual: $" + cuota);
+    public List<CreditCard> getAllCards() {
+        return repository.findAll();
     }
 
-    @Override
-    public void pay(String cardNumber, double amount) {
-        Optional<CreditCard> cardOpt = repository.findById(cardNumber);
-
-        if (cardOpt.isEmpty()) {
-            System.out.println("Error: La tarjeta " + cardNumber + " no existe.");
-            return;
-        }
-
-        CreditCard card = cardOpt.get();
-
-        double newBalance = card.getBalance() + amount;
-        card.setBalance(newBalance);
-
-        Transaction paymentRecord = new Transaction(
-                card.getTransactions().size() + 1,
-                TransactionType.CREDIT_PAYMENT,
-                amount,
-                newBalance,
-                "Pago realizado a la tarjeta de crédito"
-        );
-        card.getTransactions().add(paymentRecord);
-
-        repository.update(card);
-        System.out.println("Pago exitoso. Nuevo saldo: $" + newBalance);
-    }
-
-    @Override
-    public double calculateMonthlyInstallment(double amount, int installments) {
-        double rate = getRateByInstallments(installments);
-
-        if (rate == 0.0) {
-            return amount / installments;
-        }
-
-        return (amount * rate) / (1 - Math.pow(1 + rate, -installments));
-    }
-
+    // Tabla de tasas según número de cuotas
     private double getRateByInstallments(int installments) {
         if (installments <= 2) return 0.0;
         if (installments <= 6) return 0.019;
         return 0.023;
+    }
+
+    // Fórmula de cuota mensual
+    public double calculateMonthlyInstallment(double amount, int installments) {
+        double rate = getRateByInstallments(installments);
+        if (rate == 0.0) {
+            return amount / installments;
+        }
+        return (amount * rate) / (1 - Math.pow(1 + rate, -installments));
+    }
+
+    // Simulación de compra con tarjeta
+    public void purchase(String cardNumber, double amount, int installments) {
+        CreditCard card = repository.findByCardNumber(cardNumber);
+        if (card == null) {
+            System.out.println("⚠️ Tarjeta no encontrada.");
+            return;
+        }
+
+        if (card.getDebt() + amount > card.getQuota() || amount > card.getCreditLimit()) {
+            System.out.println("⚠️ Cupo insuficiente o supera el límite de crédito.");
+            return;
+        }
+
+        double rate = getRateByInstallments(installments);
+        double cuota = calculateMonthlyInstallment(amount, installments);
+        double totalConInteres = cuota * installments;
+
+        card.setDebt(card.getDebt() + amount);
+        card.setNumberOfInstallments(installments);
+        repository.update(card);
+
+        System.out.println("\n💳 Compra realizada con tarjeta " + cardNumber);
+        System.out.printf("Monto: $%.2f | Cuotas: %d%n", amount, installments);
+        System.out.printf("Tasa aplicada: %.2f%%%n", rate * 100);
+        System.out.printf("Cuota mensual: $%.2f%n", cuota);
+        System.out.printf("Total a pagar con intereses: $%.2f%n", totalConInteres);
+        System.out.printf("Nueva deuda acumulada (capital): $%.2f%n", card.getDebt());
     }
 }
 
