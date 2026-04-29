@@ -1,11 +1,9 @@
 package application.domain;
 
 import application.domain.enums.TransactionType;
-
 import java.time.LocalDateTime;
 
 public class Transaction {
-
     private int id;
     private LocalDateTime timestamp;
     private TransactionType transactionType;
@@ -22,39 +20,16 @@ public class Transaction {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public double getBalanceAfterTransaction() {
-        return balanceAfterTransaction;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+    public int getId() { return id; }
+    public LocalDateTime getTimestamp() { return timestamp; }
+    public TransactionType getTransactionType() { return transactionType; }
+    public double getAmount() { return amount; }
+    public double getBalanceAfterTransaction() { return balanceAfterTransaction; }
+    public String getDescription() { return description; }
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", timestamp=" + timestamp +
-                ", transactionType=" + transactionType +
-                ", amount=" + amount +
-                ", balanceAfterTransaction=" + balanceAfterTransaction +
-                ", description='" + description + '\'' +
-                '}';
+        return String.format("[%s] %-12s | Monto: $%.2f | Saldo: $%.2f | %s",
+                timestamp, transactionType, amount, balanceAfterTransaction, description);
     }
 }

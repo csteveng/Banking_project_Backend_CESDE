@@ -22,6 +22,10 @@ public abstract class Account {
         this.transactions = transactions;
     }
 
+    public Account() {
+
+    }
+
     public String getAccountNumber() {
         return accountNumber;
     }
