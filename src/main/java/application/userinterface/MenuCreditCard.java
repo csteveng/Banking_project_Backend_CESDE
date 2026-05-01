@@ -2,6 +2,7 @@ package application.userinterface;
 
 import application.service.ClientService;
 import application.domain.CreditCard;
+import application.service.ClientServiceImpl;
 import application.util.FormValidationUtil;
 
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 public class MenuCreditCard {
     private final ClientService clientService;
 
-    public MenuCreditCard(ClientService clientService) {
+    public MenuCreditCard(ClientServiceImpl clientService) {
         this.clientService = clientService;
     }
 
