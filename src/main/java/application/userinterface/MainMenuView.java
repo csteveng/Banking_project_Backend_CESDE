@@ -1,9 +1,10 @@
 package application.userinterface;
 
+import application.service.ClientServiceImpl;
 import application.service.CreditCardServiceImpl;
 import application.service.outputs.CheckingAccountService;
 import application.service.outputs.SavingsAccountService;
-import application.service.ClientService;
+import application.service.CreditCardServiceImpl;
 import application.util.FormValidationUtil;
 import application.view.CheckingAccountView;
 import application.view.SavingsAccountView;
@@ -15,17 +16,17 @@ public class MainMenuView {
 
     public MainMenuView(CheckingAccountService checkingService,
                         SavingsAccountService savingsService,
-                        CreditCardServiceImpl creditCardService, ClientService clientService) {
+                        CreditCardServiceImpl creditCardService, ClientServiceImpl clientService) {
         this.checkingAccountView = new CheckingAccountView(checkingService);
         this.savingsAccountView = new SavingsAccountView(savingsService);
-        this.menuCreditCard = new MenuCreditCard( clientService);
+        this.menuCreditCard = new MenuCreditCard(clientService);
     }
 
 
     public void showMenu() {
         int option;
         do {
-            System.out.println("\n=== MENÚ PRINCIPAL BANCO CESDE ===");
+            System.out.println("\n=== MENÚ PRINCIPAL HAPIBANK ===");
             System.out.println("1. Cuenta Corriente");
             System.out.println("2. Cuenta de Ahorros");
             System.out.println("3. Tarjeta de Crédito");
