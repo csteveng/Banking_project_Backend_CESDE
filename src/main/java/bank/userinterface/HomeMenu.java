@@ -1,8 +1,8 @@
 package bank.userinterface;
 
 import bank.domain.Client;
-import bank.infrastructure.util.FormValidationUtil;
-import bank.infrastructure.in.view.adapter.ClientView;
+import bank.utils.FormValidationUtil;
+import bank.view.ClientView;
 
 public class HomeMenu {
 

@@ -1,7 +1,7 @@
 package bank.userinterface;
 
-import bank.infrastructure.in.view.adapter.CreditCardView;
-import bank.infrastructure.util.FormValidationUtil;
+import bank.view.CreditCardView;
+import bank.utils.FormValidationUtil;
 
 public class MenuCreditCard {
     private final CreditCardView creditCardView;

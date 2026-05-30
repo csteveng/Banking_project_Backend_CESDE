@@ -1,13 +1,13 @@
 package bank.userinterface;
 
-import bank.application.inputs.IClientManagement;
+import bank.services.inputs.IClientManagement;
 import bank.domain.Client;
-import bank.application.inputs.CheckingAccountService;
-import bank.application.CreditCardServiceImpl;
-import bank.infrastructure.util.FormValidationUtil;
-import bank.infrastructure.in.view.adapter.CheckingAccountView;
-import bank.infrastructure.in.view.adapter.CreditCardView;
-import bank.infrastructure.in.view.adapter.SavingsAccountView;
+import bank.services.inputs.CheckingAccountService;
+import bank.services.CreditCardServiceImpl;
+import bank.utils.FormValidationUtil;
+import bank.view.CheckingAccountView;
+import bank.view.CreditCardView;
+import bank.view.SavingsAccountView;
 
 public class MainMenuView {
     private final CheckingAccountView checkingAccountView;

@@ -1,25 +1,22 @@
 package bank.configuration;
 
-import bank.application.inputs.IClientManagement;
-import bank.application.ports.ICheckingAccountRepository;
-import bank.application.ports.ITransactionRepository;
-import bank.domain.Transaction;
-import bank.infrastructure.in.view.adapter.CheckingAccountView;
-import bank.infrastructure.out.adapter.*;
-import bank.infrastructure.out.db.DatabaseConnectionMySQL; // Importamos tu clase Singleton
-import bank.application.CheckingAccountServiceImpl;
-import bank.application.SavingsAccountServiceImpl;
-import bank.application.CreditCardServiceImpl;
-import bank.application.ClientServiceImpl;
-import bank.infrastructure.out.mapper.CheckingAccountRowMapper;
-import bank.infrastructure.out.mapper.SavingsAccountRowMapper;
-import bank.infrastructure.out.mapper.TransactionRowMapper;
+import bank.services.outputport.ITransactionRepository;
+import bank.view.CheckingAccountView;
+import bank.persistence.repository.*;
+import bank.persistence.database.DatabaseConnectionMySQL; // Importamos tu clase Singleton
+import bank.services.CheckingAccountServiceImpl;
+import bank.services.SavingsAccountServiceImpl;
+import bank.services.CreditCardServiceImpl;
+import bank.services.ClientServiceImpl;
+import bank.persistence.mapper.CheckingAccountRowMapper;
+import bank.persistence.mapper.SavingsAccountRowMapper;
+import bank.persistence.mapper.TransactionRowMapper;
 import bank.userinterface.MainMenuView;
 import bank.userinterface.HomeMenu;
-import bank.infrastructure.in.view.adapter.ClientView;
-import bank.infrastructure.in.view.adapter.CreditCardView;
-import bank.infrastructure.in.view.adapter.SavingsAccountView;
-import bank.infrastructure.out.mapper.ClientRowMapper;
+import bank.view.ClientView;
+import bank.view.CreditCardView;
+import bank.view.SavingsAccountView;
+import bank.persistence.mapper.ClientRowMapper;
 
 import java.sql.Connection;
 

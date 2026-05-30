@@ -1,7 +1,7 @@
 package bank.userinterface;
 
-import bank.infrastructure.util.FormValidationUtil;
-import bank.infrastructure.in.view.adapter.SavingsAccountView;
+import bank.utils.FormValidationUtil;
+import bank.view.SavingsAccountView;
 
 public class MenuSavingsAccount {
     private final SavingsAccountView savingsAccountView;
